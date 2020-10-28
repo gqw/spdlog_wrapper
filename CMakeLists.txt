@@ -9,8 +9,18 @@ file(GLOB SOURCE_FILES
 	./src/*.cpp
 )
 
-add_definitions(-DUNICODE -D_UNICODE -D_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING -DPROJECT_NAME="${PROJECT_NAME}" /std:c++latest /utf-8)
+if (WIN32)
+	add_definitions(-DUNICODE -D_UNICODE -D_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING -DPROJECT_NAME="${PROJECT_NAME}" /std:c++latest /utf-8)
+else()
+	add_definitions(-g -O0 -Wall -std=c++2a)
+endif()
+
+
 
 add_executable(${PROJECT_NAME}  ${SOURCE_FILES} )
 target_include_directories(${PROJECT_NAME} PUBLIC 
 	${CMAKE_HOME_DIRECTORY}/third/spdlog/include )
+if (UNIX)
+	target_link_libraries(${PROJECT_NAME} pthread)
+endif()
+
