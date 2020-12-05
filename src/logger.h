@@ -107,12 +107,12 @@ public:
 		spdlog::flush_on(lvl);
 	}
 
-	static std::size_t get_filename_pos(std::string_view path) {
+	static const char* get_shortname(std::string_view path) {
 		if (path.empty())
-			return 0;
+			return path.data();
 
 		size_t pos = path.find_last_of("/\\");
-		return (pos == path.npos) ? 0 : pos + 1;
+		return path.data() + ((pos == path.npos) ? 0 : pos + 1);
 	}
 
 private:
@@ -128,7 +128,7 @@ private:
 };
 
 // got short filename(exlude file directory)
-#define __FILENAME__ (__FILE__ + logger::get_filename_pos(__FILE__))
+#define __FILENAME__ (logger::get_shortname(__FILE__))
 
 // use fmt lib, e.g. LOG_WARN("warn log, {1}, {1}, {2}", 1, 2);
 #define LOG_TRACE(msg,...) { if (logger::get().getLogLevel() == spdlog::level::trace) spdlog::log({__FILENAME__, __LINE__, __FUNCTION__}, spdlog::level::trace, msg, ##__VA_ARGS__); };
