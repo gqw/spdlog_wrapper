@@ -2,6 +2,7 @@
 
 #include <filesystem>
 #include <sstream>
+#include <memory>
 
 #ifndef NOMINMAX
 #	undef min
@@ -17,6 +18,7 @@
 #include <spdlog/sinks/daily_file_sink.h>
 #include <spdlog/sinks/msvc_sink.h>
 #include <spdlog/sinks/stdout_sinks.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
 
 namespace fs = std::filesystem;
 /// spdlog wrap class
@@ -72,7 +74,13 @@ public:
 			spdlog::set_level(_log_level);
 			spdlog::flush_on(_log_level);
 			spdlog::set_pattern("%s(%#): [%L %D %T.%e %P %t %!] %v");
-			spdlog::set_default_logger(spdlog::daily_logger_mt("daily_logger", log_path.string(), false, 2));
+
+			auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
+			auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(log_path.string(), true);
+			std::vector<spdlog::sink_ptr> sinks{console_sink, file_sink};
+			std::shared_ptr<spdlog::logger> logger = std::make_shared<spdlog::logger>("",  sinks.begin(), sinks.end());
+
+			spdlog::set_default_logger(logger);
 		}
 		catch (std::exception_ptr e)
 		{
