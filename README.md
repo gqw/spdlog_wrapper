@@ -11,16 +11,17 @@
 
 #### 使用说明
 
-1.  直接使用`logger.h`头文件
+1.  直接使用`logger.hpp`头文件
 2.  代码示例：
    ```CPP
-    #include "logger.h"
+    #include "logger.hpp"
 
     int main() {
+        using namespace wlog;
         if (!logger::get().init("logs/test.log")) {
             return 1;
         }
-        
+
         STM_DEBUG() << "STM_DEBUG" << 1;
         PRINT_WARN("PRINT_WARN, %d", 1);
         LOG_INFO("LOG_INFO {}", 1);
