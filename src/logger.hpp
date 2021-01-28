@@ -80,7 +80,7 @@ public:
 			// auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(log_path.string(), true);
 			// sinks.push_back(file_sink);
 
-#if defined(_DEBUG) && defined(WIN32)  			
+#if defined(_DEBUG) && defined(WIN32)
 			auto ms_sink = std::make_shared<spdlog::sinks::msvc_sink_mt>();
 			sinks.push_back(ms_sink);
 #endif //  _DEBUG
@@ -88,7 +88,7 @@ public:
 #ifdef _LOG_CONSOLE
 			auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
 			sinks.push_back(console_sink);
-#endif	
+#endif
 			spdlog::set_default_logger(std::make_shared<spdlog::logger>("", sinks.begin(), sinks.end()));
 
 			spdlog::set_pattern("%s(%#): [%L %D %T.%e %P %t %!] %v");
@@ -125,7 +125,7 @@ public:
 	void set_level(spdlog::level::level_enum lvl) {
 		_log_level = lvl;
 		spdlog::set_level(lvl);
-		
+
 	}
 
 	void set_flush_on(spdlog::level::level_enum lvl) {
@@ -158,7 +158,7 @@ private:
 #define __FILENAME__ (wlog::logger::get_shortname(__FILE__))
 
 // use fmt lib, e.g. LOG_WARN("warn log, {1}, {1}, {2}", 1, 2);
-#define LOG_TRACE(msg,...) { if (wlog::logger::get().getLogLevel() == wlog::spdlog::level::trace) spdlog::log({__FILENAME__, __LINE__, __FUNCTION__}, spdlog::level::trace, msg, ##__VA_ARGS__); };
+#define LOG_TRACE(msg,...) { if (wlog::logger::get().level() == spdlog::level::trace) spdlog::log({__FILENAME__, __LINE__, __FUNCTION__}, spdlog::level::trace, msg, ##__VA_ARGS__); };
 #define LOG_DEBUG(msg,...) spdlog::log({__FILENAME__, __LINE__, __FUNCTION__}, spdlog::level::debug, msg, ##__VA_ARGS__)
 #define LOG_INFO(msg,...)  spdlog::log({__FILENAME__, __LINE__, __FUNCTION__}, spdlog::level::info, msg, ##__VA_ARGS__)
 #define LOG_WARN(msg,...)  spdlog::log({__FILENAME__, __LINE__, __FUNCTION__}, spdlog::level::warn, msg, ##__VA_ARGS__)
