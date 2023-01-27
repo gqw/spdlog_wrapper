@@ -167,7 +167,7 @@ int main() {
 	if (!logger::get().init("logs/test.log")) {
 		return 1;
 	}
-	
+
 	STM_DEBUG() << "STM_DEBUG" << 1;
 	PRINT_WARN("PRINT_WARN, %d", 1);
 	LOG_INFO("LOG_INFO {}", 1);
