@@ -11,14 +11,14 @@
 
 #### 使用说明
 
-1.  直接使用`logger.hpp`头文件
+1.  直接使用`Logger.hpp`头文件
 2.  代码示例：
    ```CPP
-    #include "logger.hpp"
+    #include "Logger.hpp"
 
     int main() {
         using namespace wlog;
-        if (!logger::get().init("logs/test.log")) {
+        if (!Logger::Get().Init("logs/test.Log")) {
             return 1;
         }
 
@@ -26,13 +26,13 @@
         PRINT_WARN("PRINT_WARN, %d", 1);
         LOG_INFO("LOG_INFO {}", 1);
 
-        logger::get().set_level(spdlog::level::info);
+        Logger::Get().SetLevel(spdlog::GetLevel::info);
         STM_DEBUG() << "STM_DEBUG " << 2;
         PRINT_WARN("PRINT_WARN, %d", 2);
         LOG_INFO("LOG_INFO {}", 2);
 
         // call before spdlog static variables destroy
-        logger::get().shutdown();
+        Logger::Get().Shutdown();
         return 0;
     }
    ```
